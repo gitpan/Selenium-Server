@@ -10,7 +10,7 @@ use File::Slurp qw(write_file);
 use File::Temp;
 use File::Spec;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 $VERSION = eval $VERSION;
 
 my $ua = LWP::UserAgent->new;
@@ -52,7 +52,13 @@ sub new {
         $path;
     };
 
-    return bless { jar => $jar }, $class;
+    my $self = bless { jar => $jar }, $class;
+
+    if ($args{auto_start}) {
+        $self->start;
+    }
+
+    return $self;
 }
 
 sub jar {
